@@ -1,0 +1,22 @@
+.body{
+    font-family:"Roboto",sans-serif;
+    background:white;
+    padding:20px;
+
+}
+.storage{
+    max-width:600;
+    margin:10px;
+    background:white;
+    padding: 20px;
+    border-radius:20px;
+}
+.h1{
+    font-family:"Roboto",sans-serif;
+    color:black;
+
+}
+p{
+    font-family:"Roboto",sans-serif;
+    color:gray;
+}
