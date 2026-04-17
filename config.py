@@ -1,8 +1,8 @@
 import os
+from dotenv import load_dotenv
 
-
-
+load_dotenv()
 class Config:
-      APP_NAME = "Dementery"
-      SECRET_KEY =os.environ.get('SECRET_KEY', os.urandom(24))
-      DEBUG = True
+     SECRET_KEY =os.getenv('SECRET_KEY',"dementery321")
+     DATABASE ='dementery.db'
+     DEBUG = os.getenv('DEBUG',"True") == "True"
