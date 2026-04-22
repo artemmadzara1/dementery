@@ -1,17 +1,35 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{config.APP_NAME}}</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
-</head>
-<body>
-    <div class="storage">
-    <h1>{{config.APP_NAME}}</h1>
-    <p>здесь что то будет</p>
+{% extends "base.html" %}
+{% block content %}
+{% if page == 'start' %}
+<div class="card">
+    <h2>Выберите тариф</h2>
+    <div class="tariff">
+        <h3>Free - 10 вопросов</h3>
+        <p>Базовая проверка</p>
+        <a href="/start/free" class="button">Начать Free</a>
     </div>
-</body>
-</html>
+    <div class="tariff">
+        <h3>Pro - 15 вопросов</h3>
+        <p>Расширенная проверка</p>
+        <a href="/start/pro" class="button pro">Начать Pro</a>
+    </div>
+</div>
+{% elif page == 'question' %}
+<div class="card">
+    <p class="progress">Вопрос {{current+1}} из {{total}} {{tier}}</p>
+    <h2>{{ question.q }}</h2>
+    <form method="POST" action="/answer">
+        <input type="text" name="answer" placeholder="Ваш ответ" required autofocus>
+        <button type="submit" class="button">Далее</button>
+    </form>
+</div>
+{% elif page == 'result' %}
+<div class="card">
+    <h2>Результат</h2>
+    <p class="score">{{score}} из {{total}} ({{percent}}%)</p>
+    <p class="recommendation {{ style }}">{{text}}</p>
+    <p class="disclaimer">Это не диагноз! Обратитесь к врачу</p>
+    <a href="/start/{{tier}}" class="button">Пройти заново</a>
+</div>
+{% endif %}
+{% endblock %}
