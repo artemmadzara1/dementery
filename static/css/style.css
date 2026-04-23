@@ -1,22 +1,156 @@
-.body{
-    font-family:"Roboto",sans-serif;
-    background:white;
-    padding:20px;
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.storage{
-    max-width:600;
-    margin:10px;
-    background:white;
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
     padding: 20px;
-    border-radius:20px;
 }
-.h1{
-    font-family:"Roboto",sans-serif;
-    color:black;
 
+.container {
+    max-width: 600px;
+    margin: 0 auto;
 }
-p{
-    font-family:"Roboto",sans-serif;
-    color:gray;
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+header a {
+    color: #0066cc;
+    margin: 0 10px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-bottom: 15px;
+}
+
+.tariff {
+    background: #f5f5f5;
+    padding: 15px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.btn {
+    display: block;
+    padding: 10px;
+    background: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin: 10px 0;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn:hover {
+    background: #0055aa;
+}
+
+.btn.secondary {
+    background: #cccccc;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.consent {
+    background: #f5f5f5;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.consent input {
+    width: auto;
+    margin-right: 10px;
+}
+
+.error {
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.score {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.recommendation {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+.good {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.normal {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.bad {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.results-table th,
+.results-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.results-table th {
+    background: #f5f5f5;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    background: #f5f5f5;
+    margin: 20px 0;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #666;
 }
