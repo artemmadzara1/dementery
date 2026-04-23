@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль - Dementery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Мой профиль</h1>
+            <p>{{ session.username }} {{ session.get('otchestvo', '') }}</p>
+            <p>{{ session.get('city', 'Не указан') }}</p>
+            <nav>
+                <a href="/">На главную</a> |
+                <a href="/logout">Выйти</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="card">
+                <h2>Мои результаты тестов</h2>
+
+                {% if results %}
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Тариф</th>
+                            <th>Результат</th>
+                            <th>Процент</th>
+                            <th>Оценка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in results %}
+                        <tr>
+                            <td>{{ r.created_at }}</td>
+                            <td>{{ r.tier|upper }}</td>
+                            <td>{{ r.score }} из {{ r.total }}</td>
+                            <td>{{ r.percent }}%</td>
+                            <td>
+                                {% if r.risk == 'хорошо' %}
+                                    <span class="badge good">Всё хорошо</span>
+                                {% elif r.risk == 'нормально' %}
+                                    <span class="badge normal">Средний риск</span>
+                                {% else %}
+                                    <span class="badge bad">Высокий риск</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-results">
+                    <p><strong>У вас пока нет результатов</strong></p>
+                    <p>Пройдите тест чтобы увидеть здесь свои результаты</p>
+                    <a href="/" class="btn">Пройти тест</a>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+
+        <footer>
+            <p>Это не диагноз!</p>
+        </footer>
+    </div>
+</body>
+</html>

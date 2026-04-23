@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    {% if page == 'register' %}
+    <h2>Регистрация</h2>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <form method="POST" action="/register">
+        <input type="text" name="username" placeholder="Имя пользователя *" required>
+        <input type="text" name="fio" placeholder="Фамилия Имя *" required>
+        <input type="text" name="otchestvo" placeholder="Отчество *" required>
+        <input type="tel" name="phone" placeholder="Номер телефона *" required>
+        <input type="text" name="city" placeholder="Город *" required>
+        <input type="password" name="password" placeholder="Пароль *" required>
+
+        <div class="consent">
+            <input type="checkbox" name="consent" id="consent" required>
+            <label for="consent">
+                Согласен на обработку персональных данных (152-ФЗ) *
+            </label>
+        </div>
+
+        <p class="required-note">* Все поля обязательны</p>
+
+        <button type="submit" class="btn">Зарегистрироваться</button>
+    </form>
+    <p>Есть аккаунт? <a href="/login">Войти</a></p>
+
+    {% elif page == 'login' %}
+    <h2>Вход</h2>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <form method="POST" action="/login">
+        <input type="text" name="username" placeholder="Имя" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+        <button type="submit" class="btn">Войти</button>
+    </form>
+    <p>Нет аккаунта? <a href="/register">Регистрация</a></p>
+    {% endif %}
+</div>
+{% endblock %}
