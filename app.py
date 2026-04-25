@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, request, redirect
 from config import Config
 from base import init_db, get_db
 import hashlib
-app = Flask(__name__, static_folder='static', static_url_path='/static')
+app = Flask(__name__)
 app.secret_key = Config.SECRET_KEY
 init_db()
 questions_free = [
