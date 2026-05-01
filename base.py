@@ -6,22 +6,19 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 def init_db():
-    if os.path.exists(Config.DATABASE):
-        os.remove(Config.DATABASE)
     conn = get_db()
-    c = conn.cursor()
+    conn.cursor().execute('''CREATE TABLE IF NOT EXISTS users 
+                     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                      username TEXT UNIQUE NOT NULL, 
+                      password TEXT NOT NULL,
+                      fio TEXT NOT NULL,
+                      otchestvo TEXT NOT NULL,
+                      phone TEXT NOT NULL,
+                      city TEXT NOT NULL,
+                      tier TEXT DEFAULT 'free',
+                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
 
-    c.execute('''CREATE TABLE users 
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                  username TEXT UNIQUE NOT NULL, 
-                  password TEXT NOT NULL,
-                  fio TEXT NOT NULL,
-                  otchestvo TEXT NOT NULL,
-                  phone TEXT NOT NULL,
-                  city TEXT NOT NULL,
-                  consent INTEGER NOT NULL,
-                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
-    c.execute('''CREATE TABLE results 
+    conn.cursor().execute('''CREATE TABLE IF NOT EXISTS results 
                  (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                   user_id INTEGER NOT NULL,
                   score INTEGER NOT NULL, 
