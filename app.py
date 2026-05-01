@@ -48,7 +48,6 @@ def register():
         otchestvo = request.form.get('otchestvo')
         phone = request.form.get('phone')
         city = request.form.get('city')
-        consent = request.form.get('consent')
         if not username:
             error = 'имя обязательно'
         elif not password:
@@ -61,27 +60,20 @@ def register():
             error = 'телефон обязателен!'
         elif not city:
             error = 'город обязателен!'
-        elif not consent:
-            error = 'согласие обязательно!'
         else:
             pswd_hash = hashlib.sha256(password.encode()).hexdigest()
             conn = get_db()
             c = conn.cursor()
             try:
-                c.execute('''INSERT INTO users (username, password, fio, otchestvo, phone, city, consent) 
+                c.execute('''INSERT INTO users (username, password, fio, otchestvo, phone, city, tier) 
                              VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                          (username, pswd_hash, fio, otchestvo, phone, city, 1))
+                          (username, pswd_hash, fio, otchestvo, phone, city, 'free'))
                 conn.commit()
-                session['user_id'] = c.lastrowid
-                session['username'] = username
-                session['fio'] = fio
-                session['otchestvo'] = otchestvo
-                session['city'] = city
                 conn.close()
                 print(f'Пользователь {username} зарегистрирован!')
                 return redirect('/login')
             except Exception as e:
-                print(f'ОШИБКА: {e}')
+                print(f'ОШИБКА:{e}')
                 error = f'имя занято ({e})'
                 conn.close()
         return render_template('auth.html', page='register', error=error)
@@ -105,6 +97,7 @@ def login():
             session['fio'] = user['fio']
             session['otchestvo'] = user['otchestvo']
             session['city'] = user['city']
+            session['tier'] = user['tier']
             return redirect('/')
         error = 'неверный логин или пароль'
     return render_template('auth.html', page='login', error=error)
@@ -177,6 +170,51 @@ def profile():
               (session['user_id'],))
     results = c.fetchall()
     conn.close()
-    return render_template('profile.html', results=results)
+    avg = sum(r['percent'] for r in results) / len(results) if results else 0
+    is_pro = session.get('tier') == 'pro'
+    if is_pro:
+        if avg >= 80:
+            recomendat = [
+                {'text': "Отличный результат! Продолжай активность"},
+                {'text': "Попробуй что-то сложнее для мозга"}
+            ]
+        elif avg >= 50:
+            recomendat = [
+                {'text': "Нагружай мозг больше"},
+                {'text': "Спи 7-8ч в день для восстановления мозга"}
+            ]
+        else:
+            recomendat = [
+                {'text': "Проконсультируйся со специалистом"}
+            ]
+    else:
+        recomendat = []
+    return render_template('profile.html',
+                           results=results,
+                           recomendat=recomendat,
+                           avg=round(avg, 1),
+                           is_pro=is_pro)
+@app.route('/upgrade_pro')
+def upgrade_pro():
+    if 'user_id' not in session:
+        return redirect('/login')
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('UPDATE users SET tier = ? WHERE id = ?', ('pro', session['user_id']))
+    conn.commit()
+    conn.close()
+    session['tier'] = 'pro'
+    return redirect('/profile')
+@app.route('/down_free')
+def down_free():
+    if 'user_id' not in session:
+        return redirect('/login')
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('UPDATE users SET tier = ? WHERE id = ?', ('free', session['user_id']))
+    conn.commit()
+    conn.close()
+    session['tier'] = 'free'
+    return redirect('/profile')
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
